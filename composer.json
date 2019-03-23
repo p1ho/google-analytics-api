@@ -1,0 +1,33 @@
+{
+    "name": "p1ho/google-analytics-api",
+    "description": "A wrapper for google-api-php-client to make intuitive and optimized requests to Google Analytics Reporting API v4",
+    "type": "library",
+    "keywords": [
+        "google",
+        "analytics",
+        "reports"
+    ],
+    "homepage": "https://github.com/p1ho/google-analytics-api",
+    "readme": "./README.md",
+    "require": {
+        "google/apiclient": "^2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7",
+        "friendsofphp/php-cs-fixer": "^2.14.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pokuan Ho",
+            "email": "hopokuan@umich.edu",
+            "homepage": "https://www.github.io/p1ho",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+          "P1ho\\": "/src"
+      }
+    }
+}
