@@ -30,6 +30,6 @@
       }
     },
     "scripts": {
-      "style-fix": "php php-cs-fixer-v2.phar fix ./src/"
+      "style-fix": "php php-cs-fixer-v2.phar fix ./"
     }
 }
