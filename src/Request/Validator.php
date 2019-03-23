@@ -48,9 +48,9 @@ class Validator
      * @param string $endDate (yyyy-mm-dd)
      * @param array $dimensions (array of strings)
      * @param array $metrics (array of strings)
-     * @return boolean (True if all validated)
+     * @return bool (True if all validated)
      */
-    public function pass(string $startDate, string $endDate, array $dimensions, array $metrics)
+    public function pass(string $startDate, string $endDate, array $dimensions, array $metrics): bool
     {
         return $this->_datesValidated($startDate, $endDate) &&
            $this->_dimensionsValidated($dimensions) &&
@@ -62,7 +62,7 @@ class Validator
      * Get, cache, and return Google Metadata API.
      * @return array (associative array with keys 'dimensions' and 'metrics')
      */
-    private function _fetchMetadata()
+    private function _fetchMetadata(): array
     {
         if (!file_exists(CACHE)) {
             mkdir(CACHE_PATH);
@@ -98,14 +98,14 @@ class Validator
      * check format and whether dates are in right order
      * @param string $startDate (yyyy-mm-dd)
      * @param string $endDate (yyyy-mm-dd)
-     * @return boolean
+     * @return bool
      */
-    private function _datesValidated(string $startDate, string $endDate)
+    private function _datesValidated(string $startDate, string $endDate): bool
     {
         if ($this->_dateValidated($startDate) && $this->_dateValidated($endDate)) {
             // Check if EndDate is not before StartDate
             if ((int)str_replace("-", "", $startDate) > (int)str_replace("-", "", $endDate)) {
-                throw new Exception("Invalid Dates: end-date cannot precede start-date (entered $startDate - $endDate).");
+                throw new \Exception("Invalid Dates: end-date cannot precede start-date (entered $startDate - $endDate).");
             }
             return true;
         } else {
@@ -117,12 +117,12 @@ class Validator
      * private _dateValidated function.
      * check if date format is 'yyyy-mm-dd'.
      * @param string $date
-     * @return boolean
+     * @return bool
      */
-    private function _dateValidated(string $date)
+    private function _dateValidated(string $date): bool
     {
         if ($date[4] !== '-' || $date[7] !== '-' || !ctype_digit(str_replace("-", "", $date))) {
-            throw new Exception("Invalid Format: date must be yyyy-mm-dd (entered $date).");
+            throw new \Exception("Invalid Format: date must be yyyy-mm-dd (entered $date).");
         }
         return true;
     }
@@ -130,21 +130,21 @@ class Validator
     /**
      * private _dimensionsValidated function.
      * @param  array  $dimensions
-     * @return boolean
+     * @return bool
      */
-    private function _dimensionsValidated(array $dimensions)
+    private function _dimensionsValidated(array $dimensions): bool
     {
         $excluded = $this->_getFirstExcluded($dimensions, $this->$dimensions);
         if ($excluded !== null) {
-            throw new Exception("Invalid Dimension: $excluded is not an acceptable dimension.");
+            throw new \Exception("Invalid Dimension: $excluded is not an acceptable dimension.");
         }
         $duplicate = $this->_getFirstDuplicate($dimensions);
         if ($duplicate !== null) {
-            throw new Exception("Duplicate Dimension: $duplicate is entered repeatedly.");
+            throw new \Exception("Duplicate Dimension: $duplicate is entered repeatedly.");
         }
         $count = count($dimensions);
         if ($count > MAX_DIMENSIONS) {
-            throw new Exception("Too Many Dimensions: Only ".MAX_DIMENSIONS." dimensions allowed (You have $count)");
+            throw new \Exception("Too Many Dimensions: Only ".MAX_DIMENSIONS." dimensions allowed (You have $count)");
         }
         return true;
     }
@@ -152,24 +152,24 @@ class Validator
     /**
      * private _metricsValidated function.
      * @param  array  $metrics
-     * @return boolean
+     * @return bool
      */
-    private function _metricsValidated(array $metrics)
+    private function _metricsValidated(array $metrics): bool
     {
         if (count($metrics) === 0) {
-            throw new Exception("Invalid Format: You did not enter any metrics.");
+            throw new \Exception("Invalid Format: You did not enter any metrics.");
         }
         $excluded = $this->_getFirstExcluded($metrics, $this->metrics);
         if ($excluded !== null) {
-            throw new Exception("Invalid Metric: $excluded is not an acceptable metric.");
+            throw new \Exception("Invalid Metric: $excluded is not an acceptable metric.");
         }
         $duplicate = $this->_getFirstDuplicate($metrics);
         if ($duplicate !== null) {
-            throw new Exception("Duplicate Metric: $duplicate is entered repeatedly.");
+            throw new \Exception("Duplicate Metric: $duplicate is entered repeatedly.");
         }
         $count = count($metrics);
         if ($count > MAX_METRICS) {
-            throw new Exception("Too Many Metrics: Only ".MAX_METRICS." metrics allowed (You have $count)");
+            throw new \Exception("Too Many Metrics: Only ".MAX_METRICS." metrics allowed (You have $count)");
         }
         return true;
     }
@@ -181,7 +181,7 @@ class Validator
      * @param array $fullset
      * @return string|null
      */
-    private function _getFirstExcluded(array $subset, array $fullset)
+    private function _getFirstExcluded(array $subset, array $fullset):? string
     {
         $lookup = array_flip($fullset);
         foreach ($subset as $item) {
@@ -197,7 +197,7 @@ class Validator
      * @param  array  $array
      * @return string|null
      */
-    private function _getFirstDuplicate(array $array)
+    private function _getFirstDuplicate(array $array):? string
     {
         $lookup = [];
         foreach ($array as $item) {

@@ -26,10 +26,11 @@
     ],
     "autoload": {
       "psr-4": {
-          "P1ho\\": "/src"
+          "P1ho\\GoogleAnalyticsAPI\\": "/src"
       }
     },
     "scripts": {
+      "test": "bash ./vendor/bin/phpunit --bootstrap ./vendor/autoload.php tests/",
       "style-fix": "php php-cs-fixer-v2.phar fix ./"
     }
 }
