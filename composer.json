@@ -27,7 +27,14 @@
     "autoload": {
       "psr-4": {
           "P1ho\\GoogleAnalyticsAPI\\": "/src"
-      }
+      },
+      "classmap": [
+        "src/Client.php",
+        "src/Request/Validator.php",
+        "src/Request/Assembler.php",
+        "src/Report/Fetcher.php",
+        "src/Report/Disassembler.php"
+      ]
     },
     "scripts": {
       "test": "bash ./vendor/bin/phpunit --bootstrap ./vendor/autoload.php tests/",
