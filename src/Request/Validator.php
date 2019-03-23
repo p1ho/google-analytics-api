@@ -58,6 +58,24 @@ class Validator
     }
 
     /**
+     * public getValidDimensions function.
+     * @return array
+     */
+    public function getValidDimensions(): array
+    {
+        return $this->dimensions;
+    }
+
+    /**
+     * public getValidMetrics function.
+     * @return array
+     */
+    public function getValidMetrics(): array
+    {
+        return $this->metrics;
+    }
+
+    /**
      * private _fetchMetaData function.
      * Get, cache, and return Google Metadata API.
      * @return array (associative array with keys 'dimensions' and 'metrics')
@@ -121,8 +139,15 @@ class Validator
      */
     private function _dateValidated(string $date): bool
     {
-        if ($date[4] !== '-' || $date[7] !== '-' || !ctype_digit(str_replace("-", "", $date))) {
+        $dateNum = str_replace("-", "", $date);
+        if (strlen($date) !== 10 ||
+            $date[4] !== '-' ||
+            $date[7] !== '-' ||
+            !ctype_digit($dateNum)) {
             throw new \Exception("Invalid Format: date must be yyyy-mm-dd (entered $date).");
+        }
+        if (+date("Ymd") < +$dateNum) {
+            throw new \Exception("Invalid Date: date cannot be in the future (entered $date).");
         }
         return true;
     }
@@ -134,7 +159,7 @@ class Validator
      */
     private function _dimensionsValidated(array $dimensions): bool
     {
-        $excluded = $this->_getFirstExcluded($dimensions, $this->$dimensions);
+        $excluded = $this->_getFirstExcluded($dimensions, $this->dimensions);
         if ($excluded !== null) {
             throw new \Exception("Invalid Dimension: $excluded is not an acceptable dimension.");
         }
@@ -181,7 +206,7 @@ class Validator
      * @param array $fullset
      * @return string|null
      */
-    private function _getFirstExcluded(array $subset, array $fullset):? string
+    private function _getFirstExcluded(array $subset, array $fullset): ?string
     {
         $lookup = array_flip($fullset);
         foreach ($subset as $item) {
@@ -197,11 +222,11 @@ class Validator
      * @param  array  $array
      * @return string|null
      */
-    private function _getFirstDuplicate(array $array):? string
+    private function _getFirstDuplicate(array $array): ?string
     {
         $lookup = [];
         foreach ($array as $item) {
-            if (isset($lookup[$item])) {
+            if (in_array($item, $lookup)) {
                 return $item;
             }
             $lookup[] = $item;
