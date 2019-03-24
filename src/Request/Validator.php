@@ -113,42 +113,43 @@ class Validator
     /**
      * private _datesValidated function.
      * check format and whether dates are in right order
-     * @param string $startDate (yyyy-mm-dd)
-     * @param string $endDate (yyyy-mm-dd)
+     * @param string $startDate [date that can be parsed by strtotime()]
+     * @param string $endDate [date that can be parsed by strtotime()]
      * @return bool
      */
     private function _datesValidated(string $startDate, string $endDate): bool
     {
-        if ($this->_dateValidated($startDate) && $this->_dateValidated($endDate)) {
-            // Check if EndDate is not before StartDate
-            if ((int)str_replace("-", "", $startDate) > (int)str_replace("-", "", $endDate)) {
-                throw new \Exception("Invalid Dates: end-date cannot precede start-date (entered $startDate - $endDate).");
-            }
-            return true;
+        if ($startDate === '' || $endDate === '') {
+            throw new \Exception($this->_datesErrorMsg('empty dates', $startDate, $endDate));
         } else {
-            return false;
+            $startDateUnix = strtotime($startDate);
+            $endDateUnix = strtotime($endDate);
+            $todayUnix = strtotime('now');
+            if ($startDateUnix !== false && $endDateUnix !== false) {
+                if (+$startDateUnix > +$endDateUnix) {
+                    throw new \Exception($this->_datesErrorMsg('end-date cannot precede start-date', $startDate, $endDate));
+                } elseif ($startDateUnix > $todayUnix || $endDateUnix > $todayUnix) {
+                    throw new \Exception($this->_datesErrorMsg('date cannot be in the future', $startDate, $endDate));
+                } else {
+                    return true;
+                }
+            } else {
+                throw new \Exception($this->_datesErrorMsg('could not parse dates', $startDate, $endDate));
+            }
         }
     }
 
     /**
-     * private _dateValidated function.
-     * check if date format is 'yyyy-mm-dd'.
-     * @param string $date
-     * @return bool
+     * private _datesErrorMsg function.
+     * Helper function to generate Exception message.
+     * @param  string $msg       [error message]
+     * @param  string $startDate
+     * @param  string $endDate
+     * @return string
      */
-    private function _dateValidated(string $date): bool
+    private function _datesErrorMsg(string $msg, string $startDate, string $endDate): string
     {
-        $dateNum = str_replace("-", "", $date);
-        if (strlen($date) !== 10 ||
-            $date[4] !== '-' ||
-            $date[7] !== '-' ||
-            !ctype_digit($dateNum)) {
-            throw new \Exception("Invalid Format: date must be yyyy-mm-dd (entered $date).");
-        }
-        if (+date("Ymd") < +$dateNum) {
-            throw new \Exception("Invalid Date: date cannot be in the future (entered $date).");
-        }
-        return true;
+        return "Invalid Dates: $msg (entered '$startDate' - '$endDate').";
     }
 
     /**

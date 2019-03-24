@@ -8,7 +8,7 @@ final class ValidatorTest extends TestCase
     public function testDateValidation(): void
     {
         $validator = new Validator();
-        $validDate = '2019-01-01';
+        $validDate = 'today';
         $validDimensions = [];
         $validMetrics = ['ga:users'];  // adding a valid metric because metrics can't be empty
 
@@ -21,10 +21,10 @@ final class ValidatorTest extends TestCase
         }
         $this->assertTrue($hasError);
 
-        // invalid date
+        // invalid date (unparsible by strtotime())
         $hasError = false;
         try {
-            $validator->pass('asdf;lkjasdf;lkj', $validDate, $validDimensions, $validMetrics);
+            $validator->pass('asdf', $validDate, $validDimensions, $validMetrics);
         } catch (Exception $e) {
             $hasError = true;
         }
@@ -32,7 +32,7 @@ final class ValidatorTest extends TestCase
 
         $hasError = false;
         try {
-            $validator->pass('00-01-31', $validDate, $validDimensions, $validMetrics);
+            $validator->pass('a long long time ago', $validDate, $validDimensions, $validMetrics);
         } catch (Exception $e) {
             $hasError = true;
         }
@@ -40,7 +40,7 @@ final class ValidatorTest extends TestCase
 
         $hasError = false;
         try {
-            $validator->pass('20190131', $validDate, $validDimensions, $validMetrics);
+            $validator->pass('ManyYearsAgo', $validDate, $validDimensions, $validMetrics);
         } catch (Exception $e) {
             $hasError = true;
         }
@@ -54,24 +54,40 @@ final class ValidatorTest extends TestCase
         }
         $this->assertTrue($hasError);
 
+        // date in the future
         $hasError = false;
         try {
-            $validator->pass('01-31-2019', $validDate, $validDimensions, $validMetrics);
+            $validator->pass($validDate, '3019-01-31', $validDimensions, $validMetrics);
         } catch (Exception $e) {
             $hasError = true;
         }
         $this->assertTrue($hasError);
 
-        // date in the future
         $hasError = false;
         try {
-            $validator->pass('3019-01-31', $validDate, $validDimensions, $validMetrics);
+            $validator->pass($validDate, 'tomorrow', $validDimensions, $validMetrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertTrue($hasError);
+
+        $hasError = false;
+        try {
+            $validator->pass($validDate, 'next year', $validDimensions, $validMetrics);
         } catch (Exception $e) {
             $hasError = true;
         }
         $this->assertTrue($hasError);
 
         // enddate before startdate
+        $hasError = false;
+        try {
+            $validator->pass('today', 'yesterday', $validDimensions, $validMetrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertTrue($hasError);
+
         $hasError = false;
         try {
             $validator->pass('2019-01-31', '2019-01-01', $validDimensions, $validMetrics);
@@ -81,18 +97,42 @@ final class ValidatorTest extends TestCase
         $this->assertTrue($hasError);
 
         // pass cases
+        $hasError = false;
+        try {
+            $validator->pass($validDate, $validDate, $validDimensions, $validMetrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertFalse($hasError);
+
+        $hasError = false;
+        try {
+            $validator->pass('yesterday', 'today', $validDimensions, $validMetrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertFalse($hasError);
+
+        $hasError = false;
+        try {
+            $validator->pass('3 days ago', '2 days ago', $validDimensions, $validMetrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertFalse($hasError);
+
         $this->assertTrue(
-            $validator->pass('2019-01-01', '2019-01-02', $validDimensions, $validMetrics)
+            $validator->pass('3 months ago', 'last month', $validDimensions, $validMetrics)
         );
         $this->assertTrue(
-            $validator->pass('2000-01-01', '2019-01-01', $validDimensions, $validMetrics)
+            $validator->pass('last year', 'today', $validDimensions, $validMetrics)
         );
     }
 
     public function testDimensionValidation(): void
     {
         $validator = new Validator();
-        $validDate = '2019-01-01';
+        $validDate = 'today';
         $validDimensions = array_slice($validator->getValidDimensions(), 0, 7);
         $validMetrics = ['ga:users'];
 
@@ -160,7 +200,7 @@ final class ValidatorTest extends TestCase
     public function testMetricValidation(): void
     {
         $validator = new Validator();
-        $validDate = '2019-01-01';
+        $validDate = 'today';
         $validDimensions = [];
         $validMetrics = array_slice($validator->getValidMetrics(), 0, 50);
 

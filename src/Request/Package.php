@@ -37,15 +37,14 @@ class Package
     public function __construct(string $viewId, string $startDate, string $endDate, array $dimensions, array $metrics)
     {
         $this->viewId = $viewId;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->dimensions = $dimensions;
-        $this->metrics = $metrics;
-
         $validator = new Validator();
 
         // validator will throw error if it does not pass
         if ($validator->pass($startDate, $endDate, $dimensions, $metrics)) {
+            $this->startDate = date('Y-m-d', strtotime($startDate));
+            $this->endDate = date('Y-m-d', strtotime($endDate));
+            $this->dimensions = $dimensions;
+            $this->metrics = $metrics;
             $this->_buildReportsRequest();
         }
     }

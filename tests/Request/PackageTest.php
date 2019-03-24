@@ -13,8 +13,8 @@ final class PackageTest extends TestCase
         $validMetrics = $validator->getValidMetrics();
 
         $viewId = '12345678';
-        $startDate = '2019-01-01';
-        $endDate = '2019-03-01';
+        $startDate = 'yesterday';
+        $endDate = 'today';
         $dimensions = array_slice($validDimensions, 0, 7);
         $metrics = array_slice($validMetrics, 0, 50);
 
@@ -30,6 +30,7 @@ final class PackageTest extends TestCase
         // because it's dependent on Validator, bad inputs should throw error
         $badDimensions = array_slice($validDimensions, 0, 8);
 
+        // bad dates
         $hasError = false;
         try {
             $package = new Package($viewId, '3019-01-01', $endDate, $badDimensions, $metrics);
@@ -38,6 +39,16 @@ final class PackageTest extends TestCase
         }
         $this->assertTrue($hasError);
 
+        // swapped end date and start date
+        $hasError = false;
+        try {
+            $package = new Package($viewId, $endDate, $startDate, $badDimensions, $metrics);
+        } catch (Exception $e) {
+            $hasError = true;
+        }
+        $this->assertTrue($hasError);
+
+        // bad dimensions
         $hasError = false;
         try {
             $package = new Package($viewId, $startDate, $endDate, $badDimensions, $metrics);
@@ -46,6 +57,7 @@ final class PackageTest extends TestCase
         }
         $this->assertTrue($hasError);
 
+        // bad metrics
         $badMetrics = array_slice($validMetrics, 0, 51);
         $hasError = false;
         try {
@@ -63,8 +75,8 @@ final class PackageTest extends TestCase
         $validMetrics = $validator->getValidMetrics();
 
         $viewId = '12345678';
-        $startDate = '2019-01-01';
-        $endDate = '2019-03-01';
+        $startDate = 'yesterday';
+        $endDate = 'today';
         $dimensions = array_slice($validDimensions, 0, 7);
         $metrics = array_slice($validMetrics, 0, 50);
 
@@ -82,8 +94,10 @@ final class PackageTest extends TestCase
         $this->assertEquals(count($packageDateRanges), 1);
         $packageDateRange = $packageDateRanges[0];
         $this->assertEquals(get_class($packageDateRange), 'Google_Service_AnalyticsReporting_DateRange');
-        $this->assertEquals($packageDateRange->getStartDate(), $startDate);
-        $this->assertEquals($packageDateRange->getEndDate(), $endDate);
+        $startDateFormatted = date('Y-m-d', strtotime($startDate));
+        $endDateFormatted = date('Y-m-d', strtotime($endDate));
+        $this->assertEquals($packageDateRange->getStartDate(), $startDateFormatted);
+        $this->assertEquals($packageDateRange->getEndDate(), $endDateFormatted);
 
         $packageDimensions = $packageLevel_2->getDimensions();
         $this->assertEquals(count($packageDimensions), 7);
