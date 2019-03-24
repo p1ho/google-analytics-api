@@ -31,9 +31,9 @@
       "classmap": [
         "src/Client.php",
         "src/Request/Validator.php",
-        "src/Request/Assembler.php",
+        "src/Request/Package.php",
         "src/Report/Fetcher.php",
-        "src/Report/Disassembler.php"
+        "src/Report/Assembler.php"
       ]
     },
     "scripts": {
