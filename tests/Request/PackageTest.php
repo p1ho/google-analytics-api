@@ -80,7 +80,10 @@ final class PackageTest extends TestCase
         $dimensions = array_slice($validDimensions, 0, 7);
         $metrics = array_slice($validMetrics, 0, 50);
 
-        $package = new Package($viewId, $startDate, $endDate, $dimensions, $metrics);
+        // see https://developers.google.com/analytics/devguides/reporting/core/v3/reference#filters
+        $filterExpression = "filters=ga:medium==referral";
+
+        $package = new Package($viewId, $startDate, $endDate, $dimensions, $metrics, $filterExpression);
 
         $packageLevel_1 = $package->reportsRequest;
         $this->assertEquals(get_class($packageLevel_1), 'Google_Service_AnalyticsReporting_GetReportsRequest');
@@ -110,6 +113,9 @@ final class PackageTest extends TestCase
         $packageMetricSingle = $packageMetrics[0];
         $this->assertEquals(get_class($packageMetricSingle), 'Google_Service_AnalyticsReporting_Metric');
         $this->assertEquals($packageMetricSingle->getExpression(), $metrics[0]);
+
+        $packageFiltersExp = $packageLevel_2->getFiltersExpression();
+        $this->assertEquals($packageFiltersExp, $filterExpression);
 
         // testing structure when a reportRequest doesn't have 10 metric
         $shorterMetrics = array_slice($validMetrics, 0, 25); // 25 = 10 + 10 + 5 metrics

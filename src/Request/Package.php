@@ -24,6 +24,7 @@ class Package
     public $endDate;
     public $dimensions;
     public $metrics;
+    public $filtersExp;
     public $reportsRequest;
 
     /**
@@ -34,7 +35,7 @@ class Package
      * @param array  $dimensions [array of dimensions]
      * @param array  $metrics    [array of metrics]
      */
-    public function __construct(string $viewId, string $startDate, string $endDate, array $dimensions, array $metrics)
+    public function __construct(string $viewId, string $startDate, string $endDate, array $dimensions, array $metrics, string $filtersExp = '')
     {
         $this->viewId = $viewId;
         $validator = new Validator();
@@ -45,6 +46,7 @@ class Package
             $this->endDate = date('Y-m-d', strtotime($endDate));
             $this->dimensions = $dimensions;
             $this->metrics = $metrics;
+            $this->filtersExp = $filtersExp;
             $this->_buildReportsRequest();
         }
     }
@@ -66,6 +68,7 @@ class Package
             $reportRequest->setDateRanges([$this->_getDateRange()]); // has to wrap in array
             $reportRequest->setMetrics($metricList);
             $reportRequest->setDimensions($this->_getDimensionList());
+            $reportRequest->setFiltersExpression($this->filtersExp);
             $reportRequestList[] = $reportRequest;
         }
         $reportsRequest = new \Google_Service_AnalyticsReporting_GetReportsRequest();
