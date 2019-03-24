@@ -25,7 +25,6 @@ class Validator
 {
     private $dimensions;
     private $metrics;
-    private $apiKey;
 
     /**
      * Construct the Validator
