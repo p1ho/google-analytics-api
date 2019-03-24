@@ -125,12 +125,12 @@ class Package
             $metricsOneReportRequest = [];
             for ($j = 0; $j < METRICS_LIMIT; $j++) {
                 if (isset($this->metrics[$i * METRICS_LIMIT + $j])) {
-                  $metric = $this->metrics[$i * METRICS_LIMIT + $j];
-                  $metric_obj = new \Google_Service_AnalyticsReporting_Metric();
-                  $metric_obj->setExpression($metric);
-                  $metricsOneReportRequest[] = $metric_obj;
+                    $metric = $this->metrics[$i * METRICS_LIMIT + $j];
+                    $metric_obj = new \Google_Service_AnalyticsReporting_Metric();
+                    $metric_obj->setExpression($metric);
+                    $metricsOneReportRequest[] = $metric_obj;
                 } else {
-                  break;
+                    break;
                 }
             }
             $metricListSeparated[] = $metricsOneReportRequest;
