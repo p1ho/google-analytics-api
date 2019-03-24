@@ -45,7 +45,7 @@ class Fetcher
      * @param  Package $package [request package]
      * @return object [has attributes 'callCount' and 'returnedReports']
      */
-    public function getData(Package $package): object
+    public function getData(Package $package): \stdClass
     {
         $reportsRequest = $package->reportsRequest;
         $data = (object) [
@@ -84,7 +84,7 @@ class Fetcher
      * @param  array [$returnedReport]
      * @return string|null [depending on whether nextPageToken was found]
      */
-    private function _getNextPageToken(array $returnedReport): ?string
+    private function _getNextPageToken(\Google_Service_AnalyticsReporting_GetReportsResponse $returnedReport): ?string
     {
         foreach ($returnedReport as $report) {
             $nextPageToken = $report->getNextPageToken();
