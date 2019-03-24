@@ -24,8 +24,8 @@ class Package
     public $endDate;
     public $dimensions;
     public $metrics;
+    public $reportsRequest;
 
-    private $builtPackage = [];
     /**
      * __construct function
      * @param string $viewId     [Google designated view id for the site]
@@ -51,15 +51,6 @@ class Package
     }
 
     /**
-     * public inspect function.
-     * @return array
-     */
-    public function inspect(): array
-    {
-        return $this->builtPackage;
-    }
-
-    /**
      * private _buildReportsRequest function.
      * Build the Google ReportsRequest based on how many metrics there are.
      */
@@ -80,9 +71,7 @@ class Package
         }
         $reportsRequest = new \Google_Service_AnalyticsReporting_GetReportsRequest();
         $reportsRequest->setReportRequests($reportRequestList);
-
-        $this->builtPackage['viewId'] = $this->viewId;
-        $this->builtPackage['reportsRequest'] = $reportsRequest;
+        $this->reportsRequest = $reportsRequest;
     }
 
     /**
