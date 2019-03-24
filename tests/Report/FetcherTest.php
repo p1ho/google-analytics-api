@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use P1ho\GoogleAnalyticsAPI\Report\Fetcher;
+use P1ho\GoogleAnalyticsAPI\Report\FetchedData;
 use P1ho\GoogleAnalyticsAPI\Request\Package;
 
 final class FetcherTest extends TestCase
@@ -56,6 +57,7 @@ final class FetcherTest extends TestCase
             $hasError = true;
         }
         $this->assertFalse($hasError);
+        $this->assertEquals(get_class($report), 'P1ho\GoogleAnalyticsAPI\Report\FetchedData');
 
         // can't reliably test other things because this will be vastly different
         // across sites.

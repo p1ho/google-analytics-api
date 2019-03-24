@@ -43,17 +43,23 @@ class Fetcher
      * will handle that. However, it's unlikely because it would be a lot of
      * memory usage.
      * @param  Package $package [request package]
-     * @return object [has attributes 'callCount' and 'returnedReports']
+     * @return FetchedData [has attributes 'callCount' and 'returnedReports']
      */
-    public function getData(Package $package): \stdClass
+    public function getData(Package $package): FetchedData
     {
         $reportsRequest = $package->reportsRequest;
-        $data = (object) [
-          'callCount' => 1,
-          'returnedReports' => []
-        ];
+        $data = new FetchedData();
+        $data->setViewId($package->viewId);
+        $data->setStartDate($package->startDate);
+        $data->setEndDate($package->endDate);
+        $data->setDimensions($package->dimensions);
+        $data->setMetrics($package->metrics);
+        $data->setFiltersExp($package->filtersExp);
+
         $returnedReport = $this->analyticsService->reports->batchGet($reportsRequest);
-        $data->returnedReports[] = $returnedReport;
+        $callCount = 1;
+        $returnedReports = [];
+        $returnedReports[] = $returnedReport;
 
         // Handle cases where results may exceed pagesize_limit.
         // (This is highly unlikely, as there's probably going to be a memory_size
@@ -68,10 +74,13 @@ class Fetcher
                 sleep(FETCH_INTERVAL);
             }
             $returnedReport = $this->analyticsService->reports->batchGet($reportRequest);
-            $data->callCount += 1;
-            $data->returnedReports[] = $returnedReport;
+            $callCount += 1;
+            $returnedReports[] = $returnedReport;
             $nextPageToken = $this->_getNextPageToken($returnedReport);
         }
+
+        $data->setCallCount($callCount);
+        $data->setReturnedReports($returnedReports);
 
         return $data;
     }
