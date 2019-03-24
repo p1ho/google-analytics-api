@@ -4,3 +4,4 @@ composer.lock
 .DS_Store
 php-cs-fixer-v2.phar
 .php_cs.cache
+secrets.json
