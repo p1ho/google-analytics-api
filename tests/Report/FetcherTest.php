@@ -39,7 +39,7 @@ final class FetcherTest extends TestCase
 
         // sending real requests, so use pretested dimensions/metrics
         $compatibleDimensionsMetrics = json_decode(
-            file_get_contents(__DIR__ . '/longest-compatible-dimensions-metrics.json')
+            file_get_contents(__DIR__ . '/LongestCompatibleDimensionsMetrics.json')
         );
 
         $viewId = $secrets->viewId;
