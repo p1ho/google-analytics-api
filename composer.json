@@ -1,6 +1,7 @@
 {
     "name": "p1ho/google-analytics-api",
     "description": "A wrapper for google-api-php-client to make intuitive and optimized requests to Google Analytics Reporting API v4",
+    "version": "1.0.0",
     "type": "library",
     "keywords": [
         "google",
@@ -33,7 +34,11 @@
         "src/Request/Validator.php",
         "src/Request/Package.php",
         "src/Report/Fetcher.php",
-        "src/Report/Assembler.php"
+        "src/Report/FetchedData.php",
+        "src/Report/Assembler.php",
+        "vendor/google/apiclient/src/Google/Client.php",
+        "vendor/google/apiclient-services/src/Google/Service/Analytics",
+        "vendor/google/apiclient-services/src/Google/Service/AnalyticsReporting"
       ]
     },
     "scripts": {
