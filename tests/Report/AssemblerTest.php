@@ -154,6 +154,5 @@ final class AssemblerTest extends TestCase
         }
         $this->assertFalse($hasError);
         $this->assertEquals(gettype($reportAssembled), 'array');
-
     }
 }
