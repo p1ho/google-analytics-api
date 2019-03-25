@@ -1,14 +1,17 @@
 # CHANGELOG
 
-### Update: (2019-03-22)
+### Update: (2019-03-25)
 
   1. First Public Release (v1.0.0)
 
-    * Restructured code to fit with latest PSR
+    * Completely rewrote code to conform to PSR-4
 
     * Unit Tests
 
-    * Better Documentation
+    * Rewrote Documentation
+
+    * Lots of Optimizations
+
 
 ### Update: (2018-11-26)
 
