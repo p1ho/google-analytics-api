@@ -5,6 +5,7 @@
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Report Structure](#report-structure)
 * [Development](#development)
 * [Contributors](#contributors)
 
@@ -16,15 +17,15 @@ As someone who had to use this library extensively, I wanted something that's mo
 
 ## Features
 
-* **Validation**: If you make an API request and you had a typo, Google would return a [400 Bad Request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). In this case you didn't get your data, but from my experience it would still eat into your [daily quota](https://developers.google.com/analytics/devguides/reporting/core/v4/limits-quotas#analytics_reporting_api_v4). This package uses cached results from [metadata API](https://developers.google.com/analytics/devguides/reporting/metadata/v3/) which helps with offline validation.
+* **Validation**: If you make an API request and you had a typo, Google would return a [400 Bad Request](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400). In this case you didn't get your data, but from my experience it would still eat into your [daily quota](https://developers.google.com/analytics/devguides/reporting/core/v4/limits-quotas#analytics_reporting_api_v4). This package uses cached results from [metadata API](https://developers.google.com/analytics/devguides/reporting/metadata/v3/) which helps with offline validation. (Note: some dimensions and metrics cannot be queried together, this validator as of now does not address that)
 
 * **Optimize Requests**: Google API forces users to break apart requests:
   - [A batchGet() request can take 5 subrequests](https://developers.google.com/analytics/devguides/reporting/core/v4/rest/v4/reports/batchGet#request-body).
   - [A subrequest can have 10 metrics](https://developers.google.com/analytics/devguides/reporting/core/v4/rest/v4/reports/batchGet#ReportRequest.FIELDS.metrics)
 
-  This means the returned report can be difficult to parse and aggregate. This package optimizes the packaging process of building a `batchGet()` request so no space is wasted in a single request.
+  This means it can be difficult to aggregate the requests needed for a batchGet() call. If done incorrectly, this can lead to wasting space (e.g., having a lower metrics count than 10 in a subrequest). This package optimizes the packaging process of building a `batchGet()` request so no space is wasted in a single request.
 
-* **Intuitive Reports**: Just as the package helps you aggregate the requests, it also reorganizes the fragmented reports Google returned, it's structured minimally and intuitively.
+* **Intuitive Reports**: Just as the package helps you aggregate the requests, once Google API returns the reports, this program also reorganizes the fragmented reports Google returned so it's structured minimally and intuitively. See [Report Structure](#report-structure) for details.
 
 
 # Requirements
@@ -33,7 +34,7 @@ As someone who had to use this library extensively, I wanted something that's mo
 
 * Add the created Service Account Email to your Google Analytics view. You can do this by going to your [analytics homeapge](https://analytics.google.com) &rarr; Admin &rarr; User Management.
 
-Note: If the above seemed confusing, there is a [very well written tutorial](https://github.com/spatie/laravel-analytics#how-to-obtain-the-credentials-to-communicate-with-google-analytics) on an older Google interface.
+* Note: If the above seemed confusing, there is a [very well written tutorial](https://github.com/spatie/laravel-analytics#how-to-obtain-the-credentials-to-communicate-with-google-analytics) on an older Google interface.
 
 # Installation
 
@@ -91,7 +92,9 @@ $filtersExp = "your-filter-expression-here";
 $report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics, $filtersExp);
 
 ```
-Report Structure (JSON representation)
+Note: The filter expression is the reason why I still require the `ga:` prefixes, if I had taken it out, it could make writing the filters expression confusing. I could also make it so the getData() method receives optional parameters `array $dimensionFilters` and `array $metricFilters`, but even that could introduce confusion. If this is useful to anyone, please open an issue and let me know your preference, and why.
+
+# Report Structure
 ```javascript
 {
   "requestCost": 1, // how much of daily quota was spent
@@ -139,8 +142,13 @@ Report Structure (JSON representation)
   }
 }
 ```
+# Caching
+No caching mechanism has been developed, it is expected to be taken care of by the user depending on their use case.
+
 # Development
 If you'd like to fork this project, you should set up the following in the package root.
+
+* Download [php-cs-fixer-v2.phar](https://cs.symfony.com/download/php-cs-fixer-v2.phar) and place into project root. After this is done you can run `$ composer style-fix` in the command line to autofix the styling.
 * Set up `secrets.json` in project root. It should have the following structure:
 ```javascript
 {
@@ -148,7 +156,6 @@ If you'd like to fork this project, you should set up the following in the packa
   "viewId": "view-Id-authorized-for-your-service-account"
 }
 ```
-* Download [php-cs-fixer-v2.phar](https://cs.symfony.com/download/php-cs-fixer-v2.phar) and place into project root. After this is done you can run `$ composer style-fix` in the command line to autofix the styling.
 
 # Contributors
 |[![](https://github.com/p1ho.png?size=50)](https://github.com/p1ho)
