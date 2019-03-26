@@ -1,8 +1,6 @@
 {
     "name": "p1ho/google-analytics-api",
     "description": "Abstraction of Google PHP API Client to make simple and optimized requests to Google Reporting API v4",
-    "version": "1.0.0",
-    "minimum-stability": "dev",
     "type": "library",
     "keywords": [
         "google",
@@ -36,10 +34,7 @@
         "src/Request/Package.php",
         "src/Report/Fetcher.php",
         "src/Report/FetchedData.php",
-        "src/Report/Assembler.php",
-        "vendor/google/apiclient/src/Google/Client.php",
-        "vendor/google/apiclient-services/src/Google/Service/Analytics",
-        "vendor/google/apiclient-services/src/Google/Service/AnalyticsReporting"
+        "src/Report/Assembler.php"
       ]
     },
     "scripts": {
