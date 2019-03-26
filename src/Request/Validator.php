@@ -15,7 +15,7 @@ namespace P1ho\GoogleAnalyticsAPI\Request;
  */
 
 const METADATA_PATH = "https://www.googleapis.com/analytics/v3/metadata/ga/columns"; // v4 not supported yet
-const CACHE_PATH = __DIR__ . '/../../../cache/';
+const CACHE_PATH = __DIR__ . '/../../cache/';
 const CACHE = CACHE_PATH . 'DimensionsMetrics.json';
 const CACHE_TTL = 86400000;
 const MAX_DIMENSIONS = 7;
