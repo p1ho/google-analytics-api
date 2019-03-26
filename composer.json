@@ -2,6 +2,7 @@
     "name": "p1ho/google-analytics-api",
     "description": "Abstraction of Google PHP API Client to make simple and optimized requests to Google Reporting API v4",
     "version": "1.0.0",
+    "minimum-stability": "dev",
     "type": "library",
     "keywords": [
         "google",
