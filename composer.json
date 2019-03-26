@@ -1,6 +1,6 @@
 {
     "name": "p1ho/google-analytics-api",
-    "description": "A wrapper for google-api-php-client to make intuitive and optimized requests to Google Analytics Reporting API v4",
+    "description": "Abstraction of Google PHP API Client to make simple and optimized requests to Google Reporting API v4",
     "version": "1.0.0",
     "type": "library",
     "keywords": [
