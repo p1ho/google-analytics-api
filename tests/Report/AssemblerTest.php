@@ -100,7 +100,6 @@ final class AssemblerTest extends TestCase
             }
         }
 
-
         // try to fetch report without dimensions specified (should only be 1 row)
         $package = new Package($viewId, $startDate, $endDate, [], $metrics);
         $report = $fetcher->getData($package);
@@ -112,6 +111,22 @@ final class AssemblerTest extends TestCase
         }
         $this->assertFalse($hasError);
         $this->assertEquals(gettype($reportAssembled), 'array');
+        $this->assertEquals(array_keys($reportAssembled["report"]), ["totals", "rows"]);
+        $this->assertEquals(array_keys($reportAssembled["report"]["totals"]), ["metrics"]);
+        $this->assertEquals(array_keys($reportAssembled["report"]["totals"]["metrics"]), $metrics);
+
+        // the following test only runs when there's actually data
+        if (isset($reportAssembled["report"]["rows"][0])) {
+            $this->assertEquals(count($reportAssembled["report"]['rows']), 1);
+
+            $rowData = $reportAssembled["report"]["rows"][0];
+            $this->assertEquals(array_keys($rowData), ["dimensions", "metrics"]);
+            $this->assertEquals(array_keys($rowData["dimensions"]), []);
+            // test that no metric values are 0
+            foreach ($rowData["metrics"] as $metricDatum) {
+                $this->assertNotEquals($metricDatum, 0);
+            }
+        }
 
         // try to fetch report with metrics that only support total values
         $metrics = [
@@ -154,5 +169,10 @@ final class AssemblerTest extends TestCase
         }
         $this->assertFalse($hasError);
         $this->assertEquals(gettype($reportAssembled), 'array');
+
+        $this->assertEquals(array_keys($reportAssembled["report"]), ["totals", "rows"]);
+        $this->assertEquals(array_keys($reportAssembled["report"]["totals"]), ["metrics"]);
+        $this->assertEquals(array_keys($reportAssembled["report"]["totals"]["metrics"]), $metrics);
+        $this->assertEquals(count($reportAssembled["report"]["rows"]), 0);
     }
 }
