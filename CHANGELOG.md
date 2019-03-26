@@ -1,57 +1,47 @@
 # CHANGELOG
 
-### Update: (2019-03-25)
+## Update: (2019-03-25)
 
-  1. First Public Release (v1.0.0)
+  - Completely rewrote code to conform to PSR-4
+  - Unit Tests
+  - Rewrote Documentation
+  - Lots of Optimizations
 
-    * Completely rewrote code to conform to PSR-4
-
-    * Unit Tests
-
-    * Rewrote Documentation
-
-    * Lots of Optimizations
-
-
-### Update: (2018-11-26)
-
-  1. Added options for 'performance'/'verbose'/'minimal' fetch modes
-
-    * **performance**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to FALSE, and simply return what was fetched. This is the default setting.
-
-    * **verbose**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to TRUE, which means data for all possible dimension combinations will be returned, even if all metrics are 0. This ensures structural consistency across different but may take up lots of memory.
-
-    * **minimal**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to FALSE, and then for each report cluster, it will trim metrics that have a value of 0. This ensures all data points in the report have a non-zero value, minimizing memory needed, but will take slightly longer to process.
+## Update: (2018-11-26)
 
   1. Added better error detection when fetching metadata for ga_validator
 
   1. Removed a few redundant code
 
-### Update: (2018-09-17)
+  1. Added options for **performance**/**verbose**/**minimal** fetch modes
+  
+   - **performance**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to FALSE, and simply return what was fetched. This is the default setting.
+   - **verbose**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to TRUE, which means data for all possible dimension combinations will be returned, even if all metrics are 0. This ensures structural consistency across different but may take up lots of memory.
+   - **minimal**: sets ['include-empty-rows'](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#includeEmptyRows) to FALSE, and then for each report cluster, it will trim metrics that have a value of 0. This ensures all data points in the report have a non-zero value, minimizing memory needed, but will take slightly longer to process.
 
-  1. Changed all array_push() statements to a more conventional "stack[] = needle;" type
+## Update: (2018-09-17)
 
-### Update: (2018-08-09)
+  1. Changed all array_push() statements to a more conventional `stack[] = needle;` type
+
+## Update: (2018-08-09)
 
   1. Removed the assumption that the credential files (API key, etc) have to be within the repository for security reasons:
+  -  now the config is loaded from the directory specified in `ga_config.php`
+  -  the secrets directories in config have to now be specified as absolute directories
 
-  *  now the config is loaded from the directory specified in 'ga_config.php'
-
-  *  the secrets directories in config have to now be specified as absolute directories
-
-### Update: (2018-08-07)
+## Update: (2018-08-07)
 
   1. Added format checks for dateRanges
 
-### Update: (2018-07-31)
+## Update: (2018-07-31)
 
   1. Fixed a bug where dateRange was not being processed correctly
 
-### Update: (2018-07-24)
+## Update: (2018-07-24)
 
   1. Fixed Styling for easier readability
 
-### Update: (2018-07-23)
+## Update: (2018-07-23)
 
   1. Added a few more checks for validator
 
@@ -63,21 +53,20 @@
 
   1. For the dateRange argument, added some flexibility. Now it can take in 2 types of arguments:
 
-    11. an array containing associative arrays with keys "StartDate" and "EndDate"
+   - an array containing associative arrays with keys `StartDate` and `EndDate`
+   - a single associative array with keys `StartDate` and `EndDate`
 
-    11. a single associative array with keys "StartDate" and "EndDate"
-
-### Update: (2018-07-16/2018-07-17)
+## Update: (2018-07-16/2018-07-17)
 
   1. Added results maximum per call, Google defaults to 1000 but can theoretically be maxed at 10000.
 
   1. Changed naming style: shortened GoogleAnalytics to GA
 
-### Update: (2018-07-11)
+## Update: (2018-07-11)
 
   1. Changed the GA_ReportAssembler into a utility class with static methods (which means no instantiation necessary)
 
-### Update (2018-06-26)
+## Update (2018-06-26)
 
   1. Added a GA_API.php that further abstracts the 4 stage process away from the end user. (Can be done now in 3 lines)
 
