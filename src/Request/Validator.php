@@ -89,9 +89,9 @@ class Validator
         $resp_json = json_decode($resp, true);
 
         $data = [
-      'dimensions' => [],
-      'metrics' => []
-    ];
+          'dimensions' => [],
+          'metrics' => []
+        ];
 
         foreach ($resp_json["items"] as $item) {
             if ($item["attributes"]["status"] !== "DEPRECATED") {

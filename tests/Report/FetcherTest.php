@@ -7,7 +7,7 @@ use P1ho\GoogleAnalyticsAPI\Request\Package;
 
 final class FetcherTest extends TestCase
 {
-    public function testFetcherInstantiation():void
+    public function testFetcherInstantiation(): void
     {
 
         // if credentials file do not exist throw error

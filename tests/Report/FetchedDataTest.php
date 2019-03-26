@@ -5,7 +5,7 @@ use P1ho\GoogleAnalyticsAPI\Report\FetchedData;
 
 final class FetchedDataTest extends TestCase
 {
-    public function testSetterMethods():void
+    public function testSetterMethods(): void
     {
         $viewId = '12345678';
         $startDate = 'yesterday';

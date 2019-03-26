@@ -7,7 +7,7 @@ use P1ho\GoogleAnalyticsAPI\Report\Assembler;
 
 final class AssemblerTest extends TestCase
 {
-    public function testReportGeneration():void
+    public function testReportGeneration(): void
     {
 
         /*
