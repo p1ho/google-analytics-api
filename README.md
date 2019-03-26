@@ -45,7 +45,7 @@ $ composer require p1ho/google-analytics-api
 
 # Usage
 
-```php
+```PHP
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -61,24 +61,40 @@ $viewId = '12345678';
 $startDate = 'yesterday';
 $endDate = 'today';
 
-// see https://developers.google.com/analytics/devguides/reporting/core/dimsmets
-$dimensions = ['ga:city','ga:cityId']; // no longer than 7
-$metrics = ['ga:users', 'ga:sessions']; // no longer than 50
+/*
+For complete listing of dimensions and metrics,
+see https://developers.google.com/analytics/devguides/reporting/core/dimsmets
+ */
 
-// makes the call and stores reorganized results into report.
+// no longer than 7
+$dimensions = [
+  'ga:city',
+  'ga:cityId'
+];
+// no longer than 50
+$metrics = [
+  'ga:users',
+  'ga:sessions'
+];
+
+// queries and get organized data
 $report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics);
+
 ```
 If needed, you can also add a [filter expression](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#filters)
-```php
+```PHP
 <?php
+
 // your code from before
+
 $filtersExp = "your-filter-expression-here";
 $report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics, $filtersExp);
+
 ```
 Report Structure (JSON representation)
 ```javascript
 {
-  "requestCost": 1,
+  "requestCost": 1, // how much of daily quota was spent
   "request": {
     "viewId": "specified-view-id",
     "startDate": "specified-start-date",
@@ -132,7 +148,7 @@ If you'd like to fork this project, you should set up the following in the packa
   "viewId": "view-Id-authorized-for-your-service-account"
 }
 ```
-* Download [php-cs-fixer-v2.phar](https://cs.symfony.com/download/php-cs-fixer-v2.phar) and place into project root. After this is done you can run `$ composer test` in the command line to autofix the styling.
+* Download [php-cs-fixer-v2.phar](https://cs.symfony.com/download/php-cs-fixer-v2.phar) and place into project root. After this is done you can run `$ composer style-fix` in the command line to autofix the styling.
 
 # Contributors
 |[![](https://github.com/p1ho.png?size=50)](https://github.com/p1ho)
