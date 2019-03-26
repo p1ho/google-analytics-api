@@ -76,7 +76,7 @@ $filtersExp = "your-filter-expression-here";
 $report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics, $filtersExp);
 ```
 Report Structure (JSON representation)
-```json
+```javascript
 {
   "requestCost": 1,
   "request": {
@@ -126,7 +126,7 @@ Report Structure (JSON representation)
 # Development
 If you'd like to fork this project, you should set up the following in the package root.
 * Set up `secrets.json` in project root. It should have the following structure:
-```json
+```javascript
 {
   "credentials": "path/to/your/service/account/credential/json",
   "viewId": "view-Id-authorized-for-your-service-account"
