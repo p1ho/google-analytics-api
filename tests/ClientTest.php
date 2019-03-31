@@ -15,5 +15,4 @@ final class ClientTest extends Testcase
         }
         $this->assertFalse($hasError);
     }
-
 }
