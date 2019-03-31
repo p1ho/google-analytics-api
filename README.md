@@ -1,5 +1,6 @@
 # README
-
+[![Build Status](https://travis-ci.com/p1ho/google-analytics-api.svg?branch=master)](https://travis-ci.com/p1ho/google-analytics-api)
+[![Coverage Status](https://coveralls.io/repos/github/p1ho/google-analytics-api/badge.svg)](https://coveralls.io/github/p1ho/google-analytics-api)
 # Table of Content
 * [Introduction](#introduction)
 * [Requirements](#requirements)
@@ -95,7 +96,7 @@ $report = $googleAnalytics
 Note: The filter expression is the reason why I still require the `ga:` prefixes, if I had taken it out, it could make writing the filters expression confusing. I could also make it so the getData() method receives optional parameters `array $dimensionFilters` and `array $metricFilters`, but even that could introduce confusion. If this is useful to anyone, please open an issue and let me know your preference, and why.
 
 # Report Structure
-```
+```JavaScript
 {
   // how much of daily quota was spent
   "requestCost": 1,
