@@ -13,7 +13,9 @@
         "google/apiclient": "^2.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7"
+        "phpunit/phpunit": "^7",
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpcov": "^5.0"
     },
     "license": "MIT",
     "authors": [
@@ -38,7 +40,11 @@
       ]
     },
     "scripts": {
-      "test": "bash ./vendor/bin/phpunit --bootstrap ./vendor/autoload.php tests/",
-      "style-fix": "php php-cs-fixer-v2.phar fix ./"
+      "test": "vendor/bin/phpunit tests --verbose --coverage-text",
+      "test-win": "vendor\\bin\\phpunit tests --verbose --coverage-text",
+      "style-fix-download": "curl -L https://cs.symfony.com/download/php-cs-fixer-v2.phar -o php-cs-fixer",
+      "style-fix": "php php-cs-fixer fix ./",
+      "phpcov-merge": "vendor/bin/phpcov merge --clover build/logs/clover.xml build/cov",
+      "phpcov-merge-win": "vendor\\bin\\phpcov merge --clover build/logs/clover.xml build/cov"
     }
 }
