@@ -80,7 +80,6 @@ $metrics = [
 
 // queries and get organized data
 $report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics);
-
 ```
 If needed, you can also add a [filter expression](https://developers.google.com/analytics/devguides/reporting/core/v3/reference#filters)
 ```PHP
@@ -89,82 +88,76 @@ If needed, you can also add a [filter expression](https://developers.google.com/
 // your code from before
 
 $filtersExp = "your-filter-expression-here";
-$report = $googleAnalytics->getData($viewId, $startDate, $endDate, $dimensions, $metrics, $filtersExp);
+$report = $googleAnalytics
+            ->getData($viewId, $startDate, $endDate, $dimensions, $metrics, $filtersExp);
 
 ```
 Note: The filter expression is the reason why I still require the `ga:` prefixes, if I had taken it out, it could make writing the filters expression confusing. I could also make it so the getData() method receives optional parameters `array $dimensionFilters` and `array $metricFilters`, but even that could introduce confusion. If this is useful to anyone, please open an issue and let me know your preference, and why.
 
 # Report Structure
-```javascript
+```
 {
   // how much of daily quota was spent
   "requestCost": 1,
-  
+
   // The request that was sent to Google API
   "request": {
-    "viewId": "specified-view-id",
-    "startDate": "specified-start-date",
-    "endDate": "specified-end-date",
+    "viewId": "12345678",
+    "startDate": "yyyy-mm-dd",
+    "endDate": "yyyy-mm-dd",
     "dimensions": [
-      "dimension-item1",
-      "dimension-item2"
+      "dimension",
+      "dimension"
     ],
     "metrics": [
-      "metric-item1",
-      "metric-item2"
+      "metric",
+      "metric"
     ],
     "filtersExp": "specified-filters-expression"
   },
-  
+
   // The returned report
   "report": {
-  
+
     // the summed metric values in the date range you specified
     "totals": {
-      "metric-item1": "summed-metric-value1",
-      "metric-item2": "summed-metric-value2"
+      "metric": "total-value",
+      "metric": "total-value"
     },
-    
+
     // each row contains the metric values with a unique dimension combination
     "rows": [
       {
         "dimensions": {
-          "dimension-item1": "dimension-value1",
-          "dimension-item2": "dimension-value2"
+          "dimension": "value",
+          "dimension": "value"
         },
         "metrics": {
-          "metric-item1": "metric-value1",
-          "metric-item2": "metric-value2"
+          "metric": "value",
+          "metric": "value"
         }
       },
       {
         "dimensions": {
-          "dimension-item1": "dimension-value1",
-          "dimension-item2": "dimension-value2"
+          "dimension": "value",
+          "dimension": "value"
         },
         "metrics": {
-          "metric-item1": "metric-value1",
-          "metric-item2": "metric-value2"
+          "metric": "value",
+          "metric": "value"
         }
       }
     ]
   }
 }
 ```
-# Caching
-No caching mechanism has been developed, it is expected to be taken care of by the user of this package depending on their use case.
-
 # Development
-If you'd like to fork this project, you should set up the following in the package root.
 
-* Download [php-cs-fixer-v2.phar](https://cs.symfony.com/download/php-cs-fixer-v2.phar) and place into project root. After this is done you can run `$ composer style-fix` in the command line to autofix the styling.
-* Set up `secrets.json` in project root before you run `$ composer test` for unit-tests. It should have the following structure:
-```javascript
-{
-  "credentials": "path/to/your/service/account/credential/json",
-  "viewId": "view-Id-authorized-for-your-service-account"
-}
-  ```
+* `$ composer test` will run all the tests (use `$ composer test-win` on Windows). To enable coverage analysis, a code coverage driver is needed. I used [Xdebug](https://xdebug.org/index.php) when developing on Windows. Afterwards, run `$ composer phpcov-merge` (use `$ composer phpcov-merge-win` on Windows) to merge `build/cov/coverage.cov` with `build/logs/clover.xml` as instructed on [php-coveralls doc](https://packagist.org/packages/php-coveralls/php-coveralls).
+
+* Run `$ composer style-fix-download` to download the latest php-cs-fixer file to project directory. Afterwards, you can run `$ composer style-fix` to auto style fix all your code.
+
+* No caching mechanism has been developed, it is expected to be taken care of by the user of this package depending on their use case.
 
 # Contributors
 |[![](https://github.com/p1ho.png?size=50)](https://github.com/p1ho)
