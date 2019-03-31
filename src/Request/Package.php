@@ -62,7 +62,7 @@ class Package
         $reportRequestList = [];
         foreach ($metricListSeparated as $metricList) {
             $reportRequest = new \Google_Service_AnalyticsReporting_ReportRequest();
-            $reportRequest->setIncludeEmptyRows(false);
+            $reportRequest->setIncludeEmptyRows(false); // subreport where all metrics have 0 values are not returned
             $reportRequest->setPageSize(PAGESIZE_LIMIT);
             $reportRequest->setViewId($this->viewId);
             $reportRequest->setDateRanges([$this->_getDateRange()]); // has to wrap in array

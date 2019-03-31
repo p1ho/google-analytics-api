@@ -126,10 +126,11 @@ class Assembler
                             for ($i = 0; $i < $metricValuesCount; $i++) {
                                 $metricName = $metricHeaders[$i]->getName();
                                 /*
-                                even though the package sets includeEmptyRows to false,
-                                Google still returns 0 data, so this serves as a
-                                failsafe to prevent empty values from showing.
-                                (Their absence implies 0)
+                                even though the package sets includeEmptyRows to
+                                false, if any one of the metrics in the subreport
+                                has a non-zero value, Google will still return
+                                all 10 metrics, so if the verbose mode is not
+                                enabled, we will trim metrics that have 0 value.
                                  */
                                 if ((int)$metricValues[$i] !== 0) {
                                     $builtReport['rows'][$insertPos]['metrics'][$metricName] = $metricValues[$i];
@@ -143,10 +144,11 @@ class Assembler
                             for ($i = 0; $i < $metricValuesCount; $i++) {
                                 $metricName = $metricHeaders[$i]->getName();
                                 /*
-                                even though the package sets includeEmptyRows to false,
-                                Google still returns 0 data, so this serves as a
-                                failsafe to prevent empty values from showing.
-                                (Their absence implies 0)
+                                even though the package sets includeEmptyRows to
+                                false, if any one of the metrics in the subreport
+                                has a non-zero value, Google will still return
+                                all 10 metrics, so if the verbose mode is not
+                                enabled, we will trim metrics that have 0 value.
                                  */
                                 if ((int)$metricValues[$i] !== 0) {
                                     $builtReport['rows'][$dimensionsIndex]['metrics'][$metricName] = $metricValues[$i];
