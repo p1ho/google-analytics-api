@@ -12,7 +12,7 @@
 
 # Introduction
 
-Google has a [PHP API Library](https://github.com/googleapis/google-api-php-client) that allows making requests to Google APIs from a PHP execution, including [Reporting API v4](https://developers.google.com/analytics/devguides/reporting/core/v4/) which enables access to Google Analytics data. However, while the library is quite powerful, it can be unintuitive as users have to create objects from the library, which takes a lot of digging in the documentation.
+Google has a [PHP API Library](https://github.com/googleapis/google-api-php-client) that allows making requests to Google APIs from a PHP execution, including [Reporting API v4](https://developers.google.com/analytics/devguides/reporting/core/v4/) which enables access to Google Analytics data. However, while the library is quite powerful, it can be unintuitive as users have to create objects from the library ([Google's Tutorial for PHP](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/service-php)), which takes a lot of digging in the documentation.
 
 As someone who had to use this library extensively, I wanted something that's more intuitive. Specifically, if I'm already familiar with Google Analytics and the [dimensions and metrics](https://developers.google.com/analytics/devguides/reporting/core/dimsmets) available, I should immediately be able to make requests and get my data; and thus this package was born.
 
@@ -33,7 +33,7 @@ As someone who had to use this library extensively, I wanted something that's mo
 
 * [Create a Service Account](https://developers.google.com/api-client-library/php/auth/service-accounts#creatinganaccount) and store the downloaded `json` file somewhere secure. This is needed to make calls to Google API.
 
-* Add the created Service Account Email to your Google Analytics view. You can do this by going to your [analytics homeapge](https://analytics.google.com) &rarr; Admin &rarr; User Management.
+* Add the created Service Account Email to your Google Analytics view. You can do this by going to your [Analytics Homeapge](https://analytics.google.com) &rarr; Admin &rarr; User Management.
 
 * Note: If the above seemed confusing, there is a [very well written tutorial](https://github.com/spatie/laravel-analytics#how-to-obtain-the-credentials-to-communicate-with-google-analytics) on an older Google interface.
 
@@ -127,6 +127,8 @@ Note: The filter expression is the reason why I still require the `ga:` prefixes
     },
 
     // each row contains the metric values with a unique dimension combination
+    // If all metric values for a row are 0, the row will not display
+    // Any metric within a row with a value of 0 will not display
     "rows": [
       {
         "dimensions": {
@@ -152,6 +154,7 @@ Note: The filter expression is the reason why I still require the `ga:` prefixes
   }
 }
 ```
+Note: Empty rows and 0 metric values are not displayed to minimize memory usage. Since users have the list of metrics used to make the requests, the 0 can be implied.
 # Development
 
 * `$ composer test` will run all the tests (use `$ composer test-win` on Windows). To enable coverage analysis, a code coverage driver is needed. I used [Xdebug](https://xdebug.org/index.php) when developing on Windows. Afterwards, run `$ composer phpcov-merge` (use `$ composer phpcov-merge-win` on Windows) to merge `build/cov/coverage.cov` with `build/logs/clover.xml` as instructed on [php-coveralls doc](https://packagist.org/packages/php-coveralls/php-coveralls).
