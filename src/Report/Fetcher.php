@@ -73,7 +73,7 @@ class Fetcher
             if (FETCH_INTERVAL !== 0) {
                 sleep(FETCH_INTERVAL);
             }
-            $returnedReport = $this->analyticsService->reports->batchGet($reportRequest);
+            $returnedReport = $this->analyticsService->reports->batchGet($reportsRequest);
             $callCount += 1;
             $returnedReports[] = $returnedReport;
             $nextPageToken = $this->_getNextPageToken($returnedReport);
